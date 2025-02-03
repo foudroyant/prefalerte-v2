@@ -47,13 +47,16 @@ const Navbar = () => {
 
           {/* Menu pour les écrans larges */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/home" className="text-gray-800 hover:text-blue-500">
-              Accueil
-            </Link>
+            
             {isAuthenticated ? (
-              <Link href="/private">
-                <Button variant="outline">Mon compte</Button>
+              <>
+                <Link href="/home" className="text-gray-800 hover:text-blue-500">
+                  Accueil
+                </Link>
+                <Link href="/private">
+                  <Button variant="outline">Mon compte</Button>
               </Link>
+              </>
             ) : (
               <Link href="/sign-in">
                 <Button variant="outline">Connexion</Button>
@@ -98,17 +101,20 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link
-              href="/home"
-              className="block text-gray-800 hover:text-blue-500"
-              onClick={toggleMenu}
-            >
-              Accueil
-            </Link>
+            
             {isAuthenticated ? (
-              <Link href="/private">
+              <>
+                  <Link
+                  href="/home"
+                  className="block text-gray-800 hover:text-blue-500"
+                  onClick={toggleMenu}
+                >
+                  Accueil
+                </Link>
+                <Link href="/private">
                 <Button variant="outline">Mon compte</Button>
               </Link>
+              </>
             ) : (
               <Link href="/sign-in">
                 <Button variant="outline">Connexion</Button>

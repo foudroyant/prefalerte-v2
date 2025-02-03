@@ -68,12 +68,11 @@ export default function PrefecturePage({ params }: { params: { id: string } }) {
   }, [params.id, supabase, changed])
 
   const unsubscribe = async (motif : Motif)=>{
-    console.log(motif)
     const { error,data } = await supabase
       .from('abonnements')
       .delete()
       .eq("user", user.id)
-      .eq('motif', motif.motif)
+      .eq('motif', motif.id)
 
       if(error){
         console.log(error)

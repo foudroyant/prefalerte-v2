@@ -1,30 +1,59 @@
 "use client"; // Indique que ce composant est un Client Component
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import MyForm from "@/components/phone";
 import MyForm_Phone from "@/components/phone";
+import { createClient } from '@/utils/supabase/client'
+
+interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  subscription: string;
+  credits: number;
+  phone: string;
+  address: string;
+  company: string;
+  jobTitle: string;
+}
+
 
 const CombinedPage = () => {
-  // Données de l'utilisateur (simulées)
-  const [user, setUser] = useState({
-    firstName: "Jean",
-    lastName: "Dupont",
-    email: "jean.dupont@example.com",
-    subscription: "Premium",
-    credits: 150,
-    phone: "+225 01 23 45 67 89",
-    address: "Cocody, Abidjan",
-    company: "Tech Solutions",
-    jobTitle: "Développeur Full Stack",
-  });
 
   // État pour l'édition des informations
   const [isEditing, setIsEditing] = useState(false);
+  const [_user, _setUser] = useState<any>(null)
+  const [user, setUser] = useState({
+    firstName: "Saisissez votre prenom",
+    lastName: "Saisissez votre nom",
+    email: "Saisissez votre email",
+    subscription: "Free",
+    credits: 150,
+    phone: "Saisissez votre numero de telephone",
+    address: "Saisissez votre adresse",
+    company: "Tech Solutions",
+    jobTitle: "Développeur Full Stack",
+  });
   const [formData, setFormData] = useState({ ...user });
+  const supabase = createClient()
+
+  useEffect(() => {
+    const init = async () => {
+      const { data } = await supabase.auth.getUser()
+      _setUser(data.user)
+      setUser(prevUser => ({
+        ...prevUser,
+        email: data.user?.email!
+      }));
+      
+    }
+
+    init()
+  }, [user])
 
   // Gestion de l'édition
   const handleEdit = () => {
@@ -71,6 +100,12 @@ const CombinedPage = () => {
       description: "Gérer les préfectures et leurs données.",
       link: "/admin-prefecture",
       emoji: "📊", // Emoji pour la gestion des préfectures
+    },
+    {
+      title: "Préfectures Abonnées",
+      description: "Voir les préfectures auxquelles vous êtes abonné.",
+      link: "/my-prefectures",
+      emoji: "📌", // Emoji représentant une liste d'abonnement
     },
   ];
 
@@ -142,42 +177,6 @@ const CombinedPage = () => {
                             <label className="block text-sm font-medium text-gray-700">Numéro de téléphone</label>
                             <p className="text-lg">{user.phone}</p>
                         </>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Adresse</label>
-                    {isEditing ? (
-                      <Input
-                        name="address"
-                        value={formData.address}
-                        onChange={handleChange}
-                      />
-                    ) : (
-                      <p className="text-lg">{user.address}</p>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Entreprise</label>
-                    {isEditing ? (
-                      <Input
-                        name="company"
-                        value={formData.company}
-                        onChange={handleChange}
-                      />
-                    ) : (
-                      <p className="text-lg">{user.company}</p>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Poste</label>
-                    {isEditing ? (
-                      <Input
-                        name="jobTitle"
-                        value={formData.jobTitle}
-                        onChange={handleChange}
-                      />
-                    ) : (
-                      <p className="text-lg">{user.jobTitle}</p>
                     )}
                   </div>
                   <div>
