@@ -3,14 +3,6 @@ import React from 'react'
 import Modele from './modele'
 import { createClient } from '@/utils/supabase/server'
 
-interface PrefData {
-  id: number;
-  indicatif: string;
-  created_at: string;
-  prefecture: string;
-  sousprefecture: string;
-}
-
   export default async function MesPrefectures() {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -29,7 +21,7 @@ interface PrefData {
   if (error) {
     console.error("Erreur :", error);
   } else {
-    console.log("Préfectures, motifs et abonnements de l'utilisateur :", data);
+    //console.log("Préfectures, motifs et abonnements de l'utilisateur :", data);
   }
 
     return (
@@ -42,7 +34,7 @@ interface PrefData {
   
         {/* Liste des motifs */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {data!.map((el, index) => {
+          {data!.map((el : any, index : number) => {
             return (
               <Modele key={index} motif={el.motifs["motif"]} prefecture={el.motifs["prefectures"]['prefecture']} id={el.motifs['id']}
                />

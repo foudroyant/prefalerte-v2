@@ -85,7 +85,7 @@ export default function LoginPreview() {
                       <FormControl>
                         <Input
                           id="email"
-                          placeholder="johndoe@mail.com"
+                          placeholder="username@mail.com"
                           type="email"
                           autoComplete="email"
                           {...field}

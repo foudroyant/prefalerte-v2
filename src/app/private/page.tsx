@@ -56,7 +56,7 @@ export default async function PrivatePage() {
         {/* Lien vers le tableau de bord */}
         <p className="mt-4 text-sm text-gray-500">
           Accédez à votre{' '}
-          <Link href="/dashboard" className="text-blue-500 hover:underline">
+          <Link href="/home" className="text-blue-500 hover:underline">
             tableau de bord
           </Link>
         </p>

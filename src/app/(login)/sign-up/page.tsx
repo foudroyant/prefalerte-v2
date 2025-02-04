@@ -101,7 +101,7 @@ export default function RegisterPreview() {
                     <FormItem className="grid gap-2">
                       <FormLabel htmlFor="name">Nom complet</FormLabel>
                       <FormControl>
-                        <Input id="name" placeholder="John Doe" {...field} />
+                        <Input id="name" placeholder="Username" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -118,7 +118,7 @@ export default function RegisterPreview() {
                       <FormControl>
                         <Input
                           id="email"
-                          placeholder="johndoe@mail.com"
+                          placeholder="username@gmail.com"
                           type="email"
                           autoComplete="email"
                           {...field}

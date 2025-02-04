@@ -79,7 +79,7 @@ export default function AdminPrefecturesPage() {
   }
 
   async function deletePref(prefecture: PrefData) {
-    console.log(prefecture)
+    console.log(prefecture.id)
     const { error } = await supabase
       .from('prefectures')
       .delete()

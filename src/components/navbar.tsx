@@ -28,7 +28,7 @@ const Navbar = () => {
     };
 
     initSupabase();
-  }, []);
+  }, [isAuthenticated]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

@@ -1,5 +1,6 @@
 
 import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
 import { NextResponse } from 'next/server'
 
 export async function POST() {
@@ -13,5 +14,5 @@ export async function POST() {
   }
 
   // Redirection vers la page de connexion après la déconnexion
-  return NextResponse.redirect('/sign-in')
+  return redirect('/')
 }
