@@ -1,17 +1,16 @@
 'use client'
-
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { Button } from '@/components/ui/button' // Assurez-vous d'avoir un composant Button stylisé
+import { Button } from '@/components/ui/button'
 
-export default function ErrorPage() {
+function ErrorContent() {
   const searchParams = useSearchParams()
-  const errorMessage = searchParams.get('message') || 'Une erreur inattendue s\'est produite.'
+  const errorMessage = searchParams.get('message') || "Une erreur inattendue s'est produite."
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-red-50 to-red-100 p-6">
       <div className="bg-white rounded-lg shadow-2xl p-8 max-w-md w-full text-center">
-        {/* Icône d'erreur */}
         <div className="mx-auto mb-6">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -29,29 +28,30 @@ export default function ErrorPage() {
           </svg>
         </div>
 
-        {/* Titre */}
         <h1 className="text-3xl font-bold text-gray-900 mb-4">Oups !</h1>
+        <p className="text-gray-600 mb-6">{errorMessage}</p>
 
-        {/* Message d'erreur */}
-        <p className="text-gray-600 mb-6">
-          {errorMessage}
-        </p>
-
-        {/* Bouton pour revenir à l'accueil */}
         <Link href="/">
           <Button className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
             Retour à l'accueil
           </Button>
         </Link>
 
-        {/* Lien pour contacter le support */}
         <p className="mt-4 text-sm text-gray-500">
           Besoin d'aide ?{' '}
-          <Link href="/contact" className="text-red-500 hover:underline">
+          <Link href="/" className="text-red-500 hover:underline">
             Contactez le support
           </Link>
         </p>
       </div>
     </div>
+  )
+}
+
+export default function ErrorPage() {
+  return (
+    <Suspense fallback={<p>Chargement...</p>}>
+      <ErrorContent />
+    </Suspense>
   )
 }
