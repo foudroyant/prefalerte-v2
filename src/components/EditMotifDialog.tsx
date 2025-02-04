@@ -7,13 +7,13 @@ import { Label } from "@/components/ui/label";
 
 const EditMotifDialog = ({ motif, onSave }: { motif: Motif; onSave: (updatedMotif: Motif) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [label, setLabel] = useState(motif.label);
+  const [label, setLabel] = useState(motif.motif);
   const [lien, setLien] = useState(motif.lien);
 
   const handleSave = () => {
     const updatedMotif: Motif = {
       ...motif,
-      label,
+      motif,
       lien,
     };
     onSave(updatedMotif);
@@ -32,7 +32,7 @@ const EditMotifDialog = ({ motif, onSave }: { motif: Motif; onSave: (updatedMoti
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <Label>Label</Label>
+            <Label>Motif</Label>
             <Input value={label} onChange={(e) => setLabel(e.target.value)} />
           </div>
           <div>

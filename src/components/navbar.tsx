@@ -23,7 +23,7 @@ const Navbar = () => {
       const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event, session) => {
         setIsAuthenticated(!!session?.user);
       });
-
+      
       return () => subscription?.unsubscribe();
     };
 

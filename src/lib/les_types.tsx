@@ -27,4 +27,11 @@ interface Subscription {
     sousPref: string;
     motifs: Motif[];
   }
-  
+
+  interface PrefData {
+    id: number;
+    indicatif: string;
+    created_at: string;
+    prefecture: string;
+    sousprefecture: string;
+  }

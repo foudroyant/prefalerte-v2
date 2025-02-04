@@ -1,5 +1,6 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createClient } from '@/utils/supabase/client'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
@@ -34,29 +35,52 @@ const formSchema = z.object({
     lien: z.string().min(9)
   });
 
-const ManageMotifsPage = () => {
-  const [motifs, setMotifs] = useState<Motif[]>([
-    { id: 1, label: "Motif 1", lien: "https://example.com/motif1" },
-    { id: 2, label: "Motif 2", lien: "https://example.com/motif2" },
-  ]);
+const ManageMotifsPage = ({ params }: { params: { id: string, prefecture : string } }) => {
+  const [motifs, setMotifs] = useState<Motif[]>([]);
+  const [changed, setChanged] = useState(false)
+
+  const supabase = createClient()
+
+  useEffect(()=>{
+    async function init(){
+      const { data } = await supabase.auth.getUser()
+      let { data: les_motifs, error } = await supabase
+      .from('motifs')
+      .select('*')
+      .eq("prefecture", Number.parseInt(params.id))
+      setMotifs(les_motifs || [])
+    }
+    init()
+  }, [changed])
+  
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema),
 
   })
 
-  function onSubmit(values: z.infer < typeof formSchema > ) {
+  async function deleteFunc(id : number) {
+    const { error } = await supabase
+    .from('motifs')
+    .delete()
+    .eq('id', id)
+    setChanged(!changed)
+  }
+
+  async function onSubmit(values: z.infer < typeof formSchema > ) {
     try {
       console.log(values);
-      const newMotif: Motif = {
-        id: motifs.length + 1,
-        label: values.motif,
-        lien: values.lien,
-      };
+      
+      const { data, error } = await supabase
+      .from('motifs')
+      .insert([
+        { motif: values.motif, lien: values.lien, prefecture : params.id },
+      ])
+      .select()
       form.reset()
-      setMotifs([...motifs, newMotif]);
+      setChanged(!changed)
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+          <code className="text-white">Motif ajouté avec succè !</code>
         </pre>
       );
     } catch (error) {
@@ -70,11 +94,12 @@ const ManageMotifsPage = () => {
   };
 
   const handleSaveMotif = (updatedMotif: Motif) => {
-    setMotifs(motifs.map((motif) => (motif.id === updatedMotif.id ? updatedMotif : motif)));
+    //setMotifs(motifs.map((motif) => (motif.id === updatedMotif.id ? updatedMotif : motif)));
+    console.log(updatedMotif)
   };
 
   return (
-    <div className="p-4 ">
+    <div className="">
       <h1 className="text-2xl font-bold mb-4 text-center">Gestion des motifs</h1>
 
       {/* Formulaire pour ajouter un nouveau motif */}
@@ -86,7 +111,7 @@ const ManageMotifsPage = () => {
             name="motif"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Label</FormLabel>
+                <FormLabel>Motif</FormLabel>
                 <FormControl>
                     <Input 
                     placeholder="Motif"
@@ -127,7 +152,7 @@ const ManageMotifsPage = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Label</TableHead>
+            <TableHead>Motif</TableHead>
             <TableHead>Lien</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
@@ -135,11 +160,19 @@ const ManageMotifsPage = () => {
         <TableBody>
           {motifs.map((motif) => (
             <TableRow key={motif.id}>
-              <TableCell>{motif.label}</TableCell>
               <TableCell>
-                <a href={motif.lien} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                  {motif.lien}
-                </a>
+                {motif.motif.length > 25 ? motif.motif.slice(0, 25) + "..." : motif.motif}
+              </TableCell>
+
+              <TableCell>
+              <a
+                href={motif.lien}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+              >
+                {motif.lien.length > 20 ? motif.lien.slice(0, 20) + "..." : motif.lien}
+              </a>
               </TableCell>
               <TableCell>
                 <EditMotifDialog motif={motif} onSave={handleSaveMotif} />
