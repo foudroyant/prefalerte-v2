@@ -5,7 +5,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import MyForm from "@/components/phone";
 import MyForm_Phone from "@/components/phone";
-import Menu from "./menu";
 import { createClient } from '@/utils/supabase/server'
 import Profile from "./profile";
 import { redirect } from "next/navigation";
