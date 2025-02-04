@@ -119,7 +119,7 @@ export default function AdminPrefecturesPage() {
               <TableCell>{prefecture.sousprefecture}</TableCell>
               <TableCell>{prefecture.indicatif}</TableCell>
               <TableCell className="flex justify-between">
-                <EditPrefectureDialog prefecture={prefecture} onSave={handleSave} />
+                <EditPrefectureDialog _prefecture={prefecture} onSave={handleSave} />
                 <Link href={`/admin-prefecture/${prefecture.id}`}>
                   <Button variant="default">Motifs</Button>
                 </Link>
