@@ -12,21 +12,21 @@ interface Prefecture {
   indicatif: string;
 }
 
-const EditPrefectureDialog = ({ prefecture, onSave }: { prefecture: PrefData; onSave: (updatedPrefecture: PrefData) => void }) => {
+const EditPrefectureDialog = ({ _prefecture, onSave }: { _prefecture: PrefData; onSave: (updatedPrefecture: PrefData) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [label, setLabel] = useState(prefecture.prefecture);
-  const [sousPrefecture, setSousPrefecture] = useState(prefecture.sousprefecture);
-  const [indicatif, setIndicatif] = useState(prefecture.indicatif);
+  const [label, setLabel] = useState(_prefecture.prefecture);
+  const [sousPrefecture, setSousPrefecture] = useState(_prefecture.sousprefecture);
+  const [indicatif, setIndicatif] = useState(_prefecture.indicatif);
 
   const handleSave = () => {
-    const updatedPrefecture: Prefecture = {
-      ...prefecture,
-      label,
+    /*const updatedPrefecture: PrefData = {
+      ..._prefecture,
+      prefecture,
       sousPrefecture,
       indicatif,
     };
     onSave(updatedPrefecture);
-    setIsOpen(false);
+    setIsOpen(false);*/
   };
 
   return (
