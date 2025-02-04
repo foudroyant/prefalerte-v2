@@ -13,7 +13,7 @@ const EditMotifDialog = ({ motif, onSave }: { motif: Motif; onSave: (updatedMoti
   const handleSave = () => {
     const updatedMotif: Motif = {
       ...motif,
-      motif,
+      motif : label,
       lien,
     };
     onSave(updatedMotif);
