@@ -26,6 +26,7 @@ import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { PhoneInput } from '@/components/ui/phone-input'
 import { signup } from '../actions'
+import Navbar from '@/components/navbar'
 
 // Définir le schéma de validation avec Zod
 const formSchema = z
@@ -81,7 +82,9 @@ export default function RegisterPreview() {
   }
 
   return (
-    <div className="flex min-h-[60vh] h-full w-full items-center justify-center px-4">
+    <>
+    <Navbar />
+    <div className="flex min-h-[60vh] h-full w-full items-center justify-center px-4 mt-10">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Inscription</CardTitle>
@@ -208,5 +211,6 @@ export default function RegisterPreview() {
         </CardContent>
       </Card>
     </div>
+    </>
   )
 }

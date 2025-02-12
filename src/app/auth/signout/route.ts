@@ -16,3 +16,8 @@ export async function POST() {
   // Redirection vers la page de connexion après la déconnexion
   return redirect('/')
 }
+
+/**
+ * Id plan pro : prod_RjTYMuFGREzFn6
+ * Id plan premium : prod_RjTZMjyhNnpExM
+ */

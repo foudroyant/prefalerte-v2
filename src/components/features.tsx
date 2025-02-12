@@ -19,12 +19,12 @@ const feature = [
       "Choisissez vos préférences de notification pour correspondre à votre emploi du temps et à vos besoins.",
     icon: <Infinity className="size-6" />,
   },
-  {
+  /*{
     title: "Reliability",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi necessitatibus, culpa at vitae molestias tenetur explicabo.",
     icon: <Infinity className="size-6" />,
-  },
+  },*/
 ];
 
 export  function Feature () {
@@ -33,14 +33,10 @@ export  function Feature () {
       <div className="container">
         <div className="flex w-full flex-col items-center">
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:max-w-3xl md:text-center">
-            <p className="text-sm text-muted-foreground">Pourquoi choisir PrefALERTE ? 🤔</p>
             <h2 className="text-3xl font-medium md:text-5xl">
-            Pourquoi choisir PrefALERTE ? 🤔
+              Pourquoi choisir PrefALERTE ? 🤔
             </h2>
 
-            <p className="text-muted-foreground md:max-w-2xl">
-            Recevez vos notifications en temps réel pour les rendez-vous en préfecture !
-            </p>
           </div>
         </div>
         <div className="mx-auto mt-20 grid max-w-5xl gap-6 md:grid-cols-2">

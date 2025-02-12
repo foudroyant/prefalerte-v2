@@ -33,7 +33,7 @@ interface MotifProps {
         init()
     })
     
-    const unsubscribe = async (motif : MotifProps)=>{
+    const unsubscribe = async ({motif} : {motif : any})=>{
         const { error,data } = await supabase
           .from('abonnements')
           .delete()

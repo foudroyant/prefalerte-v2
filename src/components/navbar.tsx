@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/client";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { ModeToggle } from "./dark-mode";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,12 +20,6 @@ const Navbar = () => {
       const { data: { user } } = await supabaseClient.auth.getUser();
       setIsAuthenticated(!!user);
 
-      // Écouter les changements d'état d'authentification
-      const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event, session) => {
-        setIsAuthenticated(!!session?.user);
-      });
-      
-      return () => subscription?.unsubscribe();
     };
 
     initSupabase();
@@ -62,6 +57,7 @@ const Navbar = () => {
                 <Button variant="outline">Connexion</Button>
               </Link>
             )}
+            <ModeToggle />
           </div>
 
           {/* Bouton du menu hamburger pour les petits écrans */}
@@ -120,6 +116,8 @@ const Navbar = () => {
                 <Button variant="outline">Connexion</Button>
               </Link>
             )}
+            < br/>
+            <ModeToggle />
           </div>
         </div>
       )}

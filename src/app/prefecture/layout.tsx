@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // Utilisez next/navigation au lieu de next/router
 import { Home, ChevronRight } from "lucide-react"; // Icônes pour le Breadcrumb
+import Navbar from "@/components/navbar";
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,6 +15,8 @@ const Layout = ({ children }: LayoutProps) => {
   const pathnames = pathname.split("/").filter((x) => x); // Divise le chemin en segments
 
   return (
+    <>
+    <Navbar />
     <div className="min-h-screen flex flex-col">
       {/* Header 
       <header className="bg-white shadow-md">
@@ -60,6 +63,7 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
       </footer>
     </div>
+    </>
   );
 };
 

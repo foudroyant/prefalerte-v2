@@ -1,8 +1,10 @@
 'use server'
-
+import Stripe from "stripe";
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 export async function login(formData: FormData) {
     const supabase = await createClient()
@@ -58,6 +60,13 @@ export async function signup(formData: FormData) {
   
     // Ajout des informations supplémentaires dans la table `profiles`
     if (authData.user) {
+      // Créer un client Stripe pour cet utilisateur
+    const customer = await stripe.customers.create({
+      email: authData.user.email,
+      name: data.name,
+    });
+
+    // Stocker le customerId dans la base de données
       const { error: profileError } = await supabase
         .from('users')
         .upsert([
@@ -65,6 +74,7 @@ export async function signup(formData: FormData) {
             id: authData.user.id, // L'ID de l'utilisateur créé dans `auth.users`
             name: data.name,
             phone: data.phone,
+            stripe_consumer: customer.id,
           },
         ])
   
@@ -74,6 +84,6 @@ export async function signup(formData: FormData) {
     }
   
     // Revalidation du cache et redirection
-    revalidatePath('/home', 'layout')
+    //revalidatePath('/home', 'layout')
     redirect('/home')
   }

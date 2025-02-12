@@ -2,6 +2,7 @@ import { MapPin } from 'lucide-react'
 import React from 'react'
 import Modele from './modele'
 import { createClient } from '@/utils/supabase/server'
+import Navbar from '@/components/navbar'
 
   export default async function MesPrefectures() {
     const supabase = await createClient()
@@ -25,6 +26,8 @@ import { createClient } from '@/utils/supabase/server'
   }
 
     return (
+      <>
+      <Navbar />
       <div className="space-y-8 max-w-5xl mx-auto py-10">
         {/* Titre avec icône */}
         <h1 className="text-3xl font-bold mb-6 flex items-center gap-2">
@@ -43,5 +46,6 @@ import { createClient } from '@/utils/supabase/server'
           }
         </div>
       </div>
+      </>
     )
   }

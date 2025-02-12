@@ -8,6 +8,7 @@ import MyForm_Phone from "@/components/phone";
 import { createClient } from '@/utils/supabase/server'
 import Profile from "./profile";
 import { redirect } from "next/navigation";
+import Navbar from "@/components/navbar";
 
 
 export default async function Home() {
@@ -64,6 +65,8 @@ export default async function Home() {
     ];
 
   return (
+    <>
+    <Navbar />
     <div className="min-h-scree p-4">
       <div className="max-w-7xl mx-auto">
         {/* Titre de la page */}
@@ -93,11 +96,13 @@ export default async function Home() {
                   </Card>
                 </Link>
               ))}
+              
             </div>
         </div>
 
         </div>
       </div>
     </div>
+    </>
   );
 };

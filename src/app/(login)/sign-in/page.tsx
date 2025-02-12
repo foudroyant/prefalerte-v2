@@ -25,6 +25,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { login } from '../actions'
+import { useState } from 'react'
+import Loading from '@/components/loader'
+import Navbar from '@/components/navbar'
 
 // Schéma amélioré avec des règles de validation supplémentaires
 const formSchema = z.object({
@@ -35,7 +38,11 @@ const formSchema = z.object({
     .regex(/[a-zA-Z0-9]/, { message: 'Le mot de passe doit être alphanumérique' }),
 })
 
+
+
 export default function LoginPreview() {
+  const [isLoading, setLoading] = useState(false)
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,6 +58,7 @@ export default function LoginPreview() {
       const fd = new FormData()
       fd.append("email",  values.email)
       fd.append("password",  values.password)
+      setLoading(true)
       login(fd)
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
@@ -63,8 +71,14 @@ export default function LoginPreview() {
     }
   }
 
+  if(isLoading){
+    return <Loading />
+  }
+
   return (
-    <div className="flex flex-col min-h-[50vh] h-full w-full items-center justify-center px-4">
+    <>
+    <Navbar />
+    <div className="flex flex-col min-h-[50vh] h-full w-full items-center justify-center px-4 mt-10">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Connexion</CardTitle>
@@ -139,5 +153,6 @@ export default function LoginPreview() {
         </CardContent>
       </Card>
     </div>
+    </>
   )
 }

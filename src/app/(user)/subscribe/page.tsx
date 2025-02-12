@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { createClient } from '@/utils/supabase/server'
 import { List } from "lucide-react";
 import PricingTable from "./card_plan";
+import Navbar from "@/components/navbar";
 
 const client: Client = {
     id: 1,
@@ -58,11 +59,14 @@ export default async function SubscriptionPage() {
     }
 
   return (
+    <>
+    <Navbar />
     <div className="p-4 flex justify-center">
     <div className="w-2/3"> {/* Conteneur à 2/3 de la largeur */}
         <ClientProfilePage Pricing={pricing ?? [] }  User = {user} Data_User = {data_user![0]} abonnements = {subscribes} />
     </div>
     </div>
+    </>
   );
 }
 

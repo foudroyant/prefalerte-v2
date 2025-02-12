@@ -3,14 +3,19 @@
 import Contact from "@/components/contact";
 import { Feature, Feature2 } from "@/components/features";
 import Hero from "@/components/hero";
+import Navbar from "@/components/navbar";
 import Link from "next/link";
 
 const LandingPage = () => {
   return (
     <>
-    <Hero />
-    <Feature />
-    <Contact />
+    <Navbar />
+    <div className="min-h-scree p-4">
+      <Hero />
+      <Feature />
+      <Contact />
+    </div>
+    
     </>
   );
 };
