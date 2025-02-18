@@ -1,10 +1,5 @@
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import MyForm from "@/components/phone";
-import MyForm_Phone from "@/components/phone";
 import { createClient } from '@/utils/supabase/server'
 import Profile from "./profile";
 import { redirect } from "next/navigation";
@@ -32,7 +27,7 @@ export default async function Home() {
         description: "Gérer les préfectures et leurs motifs.",
         link: "/prefecture",
         emoji: "🏛️", // Emoji pour les préfectures
-        display : data_user![0].compte == "CLIENT"
+        display : true
       },
       {
         title: "Gérer Clients",
@@ -46,7 +41,7 @@ export default async function Home() {
         description: "Gérer vos abonnements et crédits.",
         link: "/subscribe",
         emoji: "💳", // Emoji pour les abonnements
-        display : data_user![0].compte == "CLIENT"
+        display : true
       },
       {
         title: "Gérer Préfectures",
@@ -60,7 +55,7 @@ export default async function Home() {
         description: "Voir les préfectures auxquelles vous êtes abonné.",
         link: "/my-prefectures",
         emoji: "📌", // Emoji représentant une liste d'abonnement
-        display : data_user![0].compte == "CLIENT"
+        display : true
       },
     ];
 

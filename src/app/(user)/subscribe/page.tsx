@@ -1,7 +1,6 @@
-import {Button } from "@/components/ui/button";
+
 import { Card } from "@/components/ui/card";
 import { createClient } from '@/utils/supabase/server'
-import { List } from "lucide-react";
 import PricingTable from "./card_plan";
 import Navbar from "@/components/navbar";
 

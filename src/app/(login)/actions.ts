@@ -75,6 +75,7 @@ export async function signup(formData: FormData) {
             name: data.name,
             phone: data.phone,
             stripe_consumer: customer.id,
+            compte : 'CLIENT'
           },
         ])
   

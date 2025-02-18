@@ -1,7 +1,6 @@
 'use client'
 import ConfirmationModal from '@/components/confirm'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { MapPin } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 
@@ -75,12 +74,3 @@ interface MotifProps {
             </Card>
     )
   }
-
-
-  
-   function page() {
-    return (
-      <div>page</div>
-    )
-  }
-  

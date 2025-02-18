@@ -19,6 +19,7 @@ interface Subscription {
     id: number;
     motif: string;
     lien: string;
+    prefecture : number;
   }
   
   interface PrefectureData {

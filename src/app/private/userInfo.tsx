@@ -29,7 +29,6 @@ export default function UserProfile({userInfo} : {userInfo : UserInfo}) {
 
     function signOut(){
       supabase.auth.signOut()
-      console.log("click")
       redirect('/')
     }
     

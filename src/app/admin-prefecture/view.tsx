@@ -35,24 +35,48 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { createClient } from "@/utils/supabase/client"
-import { useEffect, useState } from "react"
-import { z } from "zod"
-import { useToast } from "@/hooks/use-toast"
-import { zodResolver } from "@hookform/resolvers/zod"
-import {
-  useForm
-} from "react-hook-form"
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 
-const formSchema = z.object({
-  motif: z.string(),
-  lien: z.string().min(9)
-});
+const data: Payment[] = [
+  {
+    id: "m5gr84i9",
+    amount: 316,
+    status: "success",
+    email: "ken99@yahoo.com",
+  },
+  {
+    id: "3u1reuv4",
+    amount: 242,
+    status: "success",
+    email: "Abe45@gmail.com",
+  },
+  {
+    id: "derv1ws0",
+    amount: 837,
+    status: "processing",
+    email: "Monserrat44@gmail.com",
+  },
+  {
+    id: "5kma53ae",
+    amount: 874,
+    status: "success",
+    email: "Silas22@gmail.com",
+  },
+  {
+    id: "bhqecj4p",
+    amount: 721,
+    status: "failed",
+    email: "carmella@hotmail.com",
+  },
+]
 
+export type Payment = {
+  id: string
+  amount: number
+  status: "pending" | "processing" | "success" | "failed"
+  email: string
+}
 
-const columns: ColumnDef<Motif>[] = [
+export const columns: ColumnDef<Payment>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -76,63 +100,49 @@ const columns: ColumnDef<Motif>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("status")}</div>
+    ),
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+  },
+  {
+    accessorKey: "amount",
+    header: () => <div className="text-right">Amount</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("amount"))
+
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount)
+
+      return <div className="text-right font-medium">{formatted}</div>
+    },
+  },
+  {
     id: "actions",
-    header : "Actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const motif = row.original
-
-      const [isDialogOpen, setIsDialogOpen] = useState(false)
-      const [changed, setChanged] = useState(false)
-      const supabase = createClient()
-      const { toast } = useToast()
-
-      const form = useForm < z.infer < typeof formSchema >> ({
-        resolver: zodResolver(formSchema),
-    
-      })
-      const link_splited = window.location.href.split('/')
-      const id_prefecture = link_splited[link_splited.length - 1]
-
-      async function deleteMotif(id : number) {
-        const { error } = await supabase
-        .from('motifs')
-        .delete()
-        .eq('id', id)
-        setChanged(!changed)
-      }
-
-      async function onSubmit(values: z.infer < typeof formSchema > ) {
-        try {
-          console.log(values);
-          
-          const { data, error } = await supabase
-          .from('motifs')
-          .insert([
-            { motif: values.motif, lien: values.lien, prefecture : id_prefecture},
-          ])
-          .select()
-    
-          form.reset()
-          toast(
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">Motif ajouté avec succè !</code>
-            </pre>
-          );
-          
-          setChanged(!changed)
-        } catch (error) {
-          console.error("Form submission error", error);
-          toast(
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">Failed to submit the form. Please try again.</code>
-        </pre>
-      );
-        }
-      }
+      const payment = row.original
 
       return (
-        <>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -142,103 +152,22 @@ const columns: ColumnDef<Motif>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={()=>{setIsDialogOpen(true)}}>
-              Ajouter
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Editer</DropdownMenuItem>
-            <DropdownMenuItem onClick={()=>{deleteMotif(motif.id)}}>Supprimer</DropdownMenuItem>
+            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-<DialogContent>
-  <DialogHeader>Ajouter une préfecture</DialogHeader>
-  {/* Formulaire pour ajouter un nouveau motif */}
-  <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full mx-auto py-10">
-            
-            <FormField
-            control={form.control}
-            name="motif"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Motif</FormLabel>
-                <FormControl>
-                    <Input 
-                    placeholder="Motif"
-                    
-                    type="text"
-                    {...field} />
-                </FormControl>
-                <FormDescription>Decription du motif</FormDescription>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-            
-            <FormField
-            control={form.control}
-            name="lien"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Lien</FormLabel>
-                <FormControl>
-                    <Input 
-                    placeholder="lien"
-                    
-                    type="text"
-                    {...field} />
-                </FormControl>
-                <FormDescription>Lien du motif</FormDescription>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-            <Button type="submit">Ajouter</Button>
-        </form>
-        </Form>
-</DialogContent>
-</Dialog>
-        </>
       )
-    },
-  },
-  {
-    accessorKey: "motif",
-    header: "Motif",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("motif")}</div>
-    ),
-  },
-  {
-    accessorKey: "lien",
-    header: () => <div className="text-right">Lien</div>,
-    cell: ({ row }) => {
-      return <div className="text-right font-medium">{row.getValue("lien")}</div>
     },
   },
 ]
 
-export default function DataTable({ params }: { params: { id: string}}) {
-
-  const [motifs, setMotifs] = useState<Motif[]>([]);
-  const [changed, setChanged] = useState(false)
-  const supabase = createClient()
-
-  useEffect(()=>{
-    async function init(){
-      const { data } = await supabase.auth.getUser()
-      let { data: les_motifs, error } = await supabase
-      .from('motifs')
-      .select('*')
-      .eq("prefecture", Number.parseInt(params.id))
-      setMotifs(les_motifs || [])
-    }
-    init()
-
-  }, [changed])
-
-
+export function DataTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -248,7 +177,7 @@ export default function DataTable({ params }: { params: { id: string}}) {
   const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
-    data : motifs,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -270,10 +199,10 @@ export default function DataTable({ params }: { params: { id: string}}) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filtrer motif..."
-          value={(table.getColumn("motif")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter emails..."
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("motif")?.setFilterValue(event.target.value)
+            table.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -366,7 +295,7 @@ export default function DataTable({ params }: { params: { id: string}}) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Précedent
+            Previous
           </Button>
           <Button
             variant="outline"
@@ -374,7 +303,7 @@ export default function DataTable({ params }: { params: { id: string}}) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Suivant
+            Next
           </Button>
         </div>
       </div>
